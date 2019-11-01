@@ -64,13 +64,20 @@ pkg0 = pkg_subset(graphdata,cve0)
 ## find all servers for each bin
 svr10 = svr_subset(graphdata, pkg10)
 svr7 = svr_subset(graphdata, pkg7)
+## make the lists unique
+svr7s = [ item for item in svr7 if item not in svr10]
 svr5 = svr_subset(graphdata, pkg5)
+svr5s = [ item for item in svr5 if item not in (svr10 + svr7s)]
 svr0 = svr_subset(graphdata, pkg0)
+svr0s = [ item for item in svr0 if item not in (svr10 + svr7s + svr5s)]
 
 cvebins['1. Servers with Worst CVSS=10'] = len(svr10)
-cvebins['2. Servers with Critical 7 <= CVSS <10'] = len(svr7)
-cvebins['3. Servers with Medium 5 <= CVSS <7'] = len(svr5)
-cvebins['4. Servers with Low 0 <= CVSS <5'] = len(svr0)
+cvebins['2a. Servers with Critical 7 <= CVSS <10'] = len(svr7)
+cvebins['2b.        Unique Servers 7 <= CVSS <10'] = len(svr7s)
+cvebins['3a. Servers with Medium 5 <= CVSS <7'] = len(svr5)
+cvebins['3b.      Unique Servers 5 <= CVSS <7'] = len(svr5s)
+cvebins['4a. Servers with Low 0 <= CVSS <5'] = len(svr0)
+cvebins['4b.        Unique Servers CVSS <5'] = len(svr0s)
 
 mypprint(cvebins)
 
@@ -78,8 +85,8 @@ mypprint(cvebins)
 print('up to 3 random servers with CVSS=10')
 mypprint(svr10[:3])
 print('up to 3 random servers with 7<=CVSS<10')
-mypprint(svr7[:3])
+mypprint(svr7s[:3])
 print('up to 3 random servers with 5<=CVSS<7')
-mypprint(svr5[:3])
+mypprint(svr5s[:3])
 print('up to 3 random servers with CVSS<5')
-mypprint(svr0[:3])
+mypprint(svr0s[:3])
